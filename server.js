@@ -12,7 +12,7 @@ app.use(express.json());
 
 app.use(express.static("public"));
 
-mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/workout_DB", { useNewUrlParser: true });
+mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/workout", { useNewUrlParser: true });
 
 
 app.listen(PORT, () => {
@@ -21,4 +21,21 @@ app.listen(PORT, () => {
 
 app.get("/", (req, res) => {
     res.send(index.html);
+});
+
+app.get("/exercise", (req, res) => {
+    res.send(exercise.html);
+
+});
+app.get("/api/workouts", (req, res) => {
+    db.workout.find({}, (error, data) => {
+        if (error) {
+            console.log(error);
+            res.send(error);
+        }
+
+        console.log(data);
+
+        res.send(data);
+    });
 });
