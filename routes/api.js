@@ -1,21 +1,32 @@
 const router = require("express").Router();
-const workout = require("../models/workout.js");
+const db = require("../models");
+const path = require("path");
 
 
 router.get("/", (req, res) => {
     res.send(index.html);
 });
 
-router.get("/all", (req, res) => {
-    workout.find({}, (error, data) => {
-        if (error) {
-            console.log(error);
-            res.send(error);
-        }
+router.get("/exercise", (req, res) => {
+    res.sendFile(path.join(__dirname, "../public/exercise.html"));
+});
 
-        console.log(data);
+router.get("/stats", (req, res) => {
+    res.sendFile(path.join(__dirname, "../public/stats.html"));
+});
 
-        res.send(data);
-    });
+
+router.get("/api/exercise", async (req, res) => {
+    try {
+        const data = await db.find({});
+
+        res.json(data);
+
+    } catch (error) {
+
+        console.log(error);
+
+        res.send(error);
+    }
 });
 module.exports = router
