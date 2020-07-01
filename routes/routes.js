@@ -44,22 +44,25 @@ router.get("/api/workouts/range", async (req, res) => {
 });
 router.put("/api/workouts/:id", async (req, res) => {
     try {
-        const data = await Workout.update(
+        const data = await Workout.findOneAndUpdate(
             {
                 _id: req.params.id
             },
             {
                 $set: {
-                    type: req.body.type,
-                    name: req.body.name,
-                    duration: req.body.duration,
-                    weight: req.body.weight,
-                    reps: req.body.reps,
-                    sets: req.body.sets,
-                    distance: req.body.distance,
+                    exercises: {
+                        Ex_type: req.body.type,
+                        name: req.body.name,
+                        duration: req.body.duration,
+                        weight: req.body.weight,
+                        reps: req.body.reps,
+                        sets: req.body.sets,
+                        distance: req.body.distance
+                    }
                 }
             },
         );
+        console.log(req.body);
         console.log(data);
         res.json(data);
 
@@ -72,17 +75,8 @@ router.put("/api/workouts/:id", async (req, res) => {
 });
 router.post("/api/workouts/", async (req, res) => {
     try {
-        const exercise = {
-            type: req.body.type,
-            name: req.body.name,
-            duration: req.body.duration,
-            weight: req.body.weight,
-            reps: req.body.reps,
-            sets: req.body.sets,
-            distance: req.body.distance,
-        }
-        const data = await Workout.create(exercise);
-        console.log(data); 
+        const data = await Workout.create({});
+        console.log(data);
         res.json(data);
 
     } catch (error) {
