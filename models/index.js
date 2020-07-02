@@ -15,8 +15,16 @@ const WorkoutSchema = new Schema({
             sets: Number,
             distance: Number,
         }
-    ]
+    ],
+    versionKey: false
 });
+
+WorkoutSchema.methods.addDuration = function () {
+    this.duration = {
+        $sum : "$duration"
+    }
+    return this.duration
+}
 
 const Workout = model("Workout", WorkoutSchema);
 

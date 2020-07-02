@@ -1,6 +1,7 @@
 const router = require("express").Router();
 const Workout = require("../models");
 const path = require("path");
+const { db } = require("../models");
 
 
 router.get("/", (req, res) => {
@@ -18,8 +19,13 @@ router.get("/stats", (req, res) => {
 router.get("/api/workouts/", async (req, res) => {
     try {
         const data = await Workout.find({})
+        console.log(data._id);
+        let addDuration = [];
 
-        console.log(data);
+        //    let dur = data.reduce(function(a, b) {
+        //        return a + b; 
+        //    }, 0); 
+
         res.json(data);
 
     } catch (error) {
@@ -29,10 +35,10 @@ router.get("/api/workouts/", async (req, res) => {
         res.send(error);
     }
 });
+
 router.get("/api/workouts/range", async (req, res) => {
     try {
         const data = await Workout.find({})
-        console.log(data);
         res.json(data);
 
     } catch (error) {
@@ -49,21 +55,14 @@ router.put("/api/workouts/:id", async (req, res) => {
                 _id: req.params.id
             },
             {
-                $set: {
-                    exercises: {
-                        Ex_type: req.body.type,
-                        name: req.body.name,
-                        duration: req.body.duration,
-                        weight: req.body.weight,
-                        reps: req.body.reps,
-                        sets: req.body.sets,
-                        distance: req.body.distance
-                    }
+                $push: {
+                    exercises: req.body
+
+
                 }
             },
         );
-        console.log(req.body);
-        console.log(data);
+
         res.json(data);
 
     } catch (error) {
@@ -76,7 +75,7 @@ router.put("/api/workouts/:id", async (req, res) => {
 router.post("/api/workouts/", async (req, res) => {
     try {
         const data = await Workout.create({});
-        console.log(data);
+
         res.json(data);
 
     } catch (error) {
