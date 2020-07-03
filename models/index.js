@@ -3,27 +3,29 @@ const { Schema, model } = require('mongoose');
 const WorkoutSchema = new Schema({
     day: {
         type: Date,
-        default: Date.now(),
+        default: Date.now()
     },
     exercises: [
         {
-            Ex_type: String,
+            type: {
+                type: String,
+            },
             name: String,
             duration: Number,
             weight: Number,
             reps: Number,
             sets: Number,
-            distance: Number,
+            distance: Number
         }
     ],
+    totalDuration: Number,
     versionKey: false
 });
 
-WorkoutSchema.methods.addDuration = function () {
-    this.duration = {
-        $sum : "$duration"
-    }
-    return this.duration
+WorkoutSchema.methods.lastDuration = function () {
+    this.totalDuration = this.exercises.reduce((total, exercise) => { return total + exercise.duration; }, 0)
+    console.log(this.totalDuration)
+    return this.totalDuration
 }
 
 const Workout = model("Workout", WorkoutSchema);

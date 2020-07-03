@@ -19,14 +19,20 @@ router.get("/stats", (req, res) => {
 router.get("/api/workouts/", async (req, res) => {
     try {
         const data = await Workout.find({})
-        console.log(data._id);
-        let addDuration = [];
+        const returnData = [];
 
-        //    let dur = data.reduce(function(a, b) {
-        //        return a + b; 
-        //    }, 0); 
+        data.forEach(item => {
+            const workout = new Workout(item)
+            workout.exercises = item.exercises
+            workout.lastDuration();
 
-        res.json(data);
+
+            returnData.push(workout);
+        })
+
+        console.log(returnData);
+
+        res.json(returnData);
 
     } catch (error) {
 
