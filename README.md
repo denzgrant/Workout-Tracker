@@ -5,6 +5,7 @@
  Workout Tracker application that utilizes Mongoose to allow the user to add new exercises to a new workout plan or add exercises to a previous workout plan. A stats page is rendered based on the multiples exercises created. 
  <br>
   <strong>Demo: lower-goose-19055.herokuapp.com/</strong>
+  
    <img src="/images/Fitness Tracker.gif" alt="demogif"> 
   </p>
   
